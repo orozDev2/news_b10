@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}| Create News{% endblock title %}
+
+{% block content %}
+    <h2 class="mb-5">Create News</h2>
+
+    <form action="{% url 'create_news' %}" method="POST" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div>
+            <button type="submit" class="btn btn-success d-block w-100">Create</button>
+        </div>
+    </form>
+
+{% endblock content %}

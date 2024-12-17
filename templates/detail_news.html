@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1 class="text-center">{{ news.name }}</h1>
+    <div class="text-center mb-3"><img src="{{ news.image.url }}" alt="" class="w-75"></div>
+    <p class="card-text">
+        {% for tag in news.tags.all %}
+            <span>{{ tag.name }}</span> /
+        {% endfor %}
+    </p>
+    <p>{{ news.description }}</p>
+    <p>{{ news.content }}</p>
+    <p>
+        {% if news.link %}
+            {% if news.link.facebook %}
+                <a href="{{ news.link.facebook }}" class="btn btn-primary"><i class="fa-brands fa-facebook"></i></a>
+            {% endif %}
+            {% if news.link.instagram %}
+                <a href="{{ news.link.instagram }}" class="btn btn-primary"><i class="fa-brands fa-instagram"></i></a>
+            {% endif %}
+            {% if news.link.whatsapp %}
+                <a href="{{ news.link.whatsapp }}" class="btn btn-primary"><i class="fa-brands fa-whatsapp"></i></a>
+            {% endif %}
+            {% if news.link.telegram %}
+                <a href="{{ news.link.telegram }}" class="btn btn-primary"><i class="fa-brands fa-telegram"></i></a>
+            {% endif %}
+        {% endif %}
+    </p>
+    <p class="text-end">
+        {{ news.date|date:"d/m/Y" }} - {{ news.author }}
+    </p>
+{% endblock content %}

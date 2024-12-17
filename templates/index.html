@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load custom_tags %}
+
+{% block title %}| Main{% endblock title %}
+
+{% block content %}
+    <h1 class="mb-5">News.kg | {% news_views news %}</h1>
+
+    <div class="row">
+        {% for item in news %}
+            <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+                <div class="card">
+                    <img src="{{ item.image.url }}" class="card-img-top" alt="{{ item.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item.name }}</h5>
+                        <p>{{ item.category.name }}</p>
+                        <p class="card-text">{{ item.description|capitalize }}</p>
+                        <p class="card-text">
+                            {% for tag in item.tags.all %}
+                                <span>{{ tag.name }}</span> /
+                            {% endfor %}
+                        </p>
+                        <a href="{% url 'detail_news' id=item.id %}" class="btn btn-primary">View {{ item.views }}</a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <h3 class="text-center">No news...</h3>
+        {% endfor %}
+
+
+        {% include 'components/news_pagination.html' %}
+
+    </div>
+{% endblock content %}

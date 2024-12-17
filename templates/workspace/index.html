@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}| Workspace{% endblock title %}
+
+{% block content %}
+
+    <div class="d-flex justify-content-between">
+      <h1 class="mb-5">Welcome to Workspace</h1>
+      <div class="text-end">
+          <a href="{% url 'create_news' %}" class="btn btn-success">Create News <i class="fa-solid fa-circle-plus"></i></a>
+      </div>
+    </div>
+
+    <div class="row">
+        {% for item in news %}
+            <div class="col-lg-3 col-md-4 col-sm-6 col-12 mb-4">
+                <div class="card">
+                    <img src="{{ item.image.url }}" class="card-img-top" alt="{{ item.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ item.name }}</h5>
+                        <p>{{ item.category.name }}</p>
+                        <p class="card-text">{{ item.description }}</p>
+                        <p class="card-text">
+                            {% for tag in item.tags.all %}
+                                <span>{{ tag.name }}</span> /
+                            {% endfor %}
+                        </p>
+                        <div>
+                            <a href="{% url 'detail_news' id=item.id %}" class="btn btn-primary">View {{ item.views }}</a>
+                             <a href="{% url 'update_news' id=item.id %}" class="btn btn-warning"><i class="fa-solid fa-pen-to-square"></i></a>
+                             <a href="" class="btn btn-danger"><i class="fa-solid fa-trash"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <h3 class="text-center">No news...</h3>
+        {% endfor %}
+
+        {% include 'components/news_pagination.html' %}
+
+
+    </div>
+{% endblock content %}
