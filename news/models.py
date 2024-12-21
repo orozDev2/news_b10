@@ -50,7 +50,9 @@ class News(models.Model):
     content = models.TextField(verbose_name='контент')
     date = models.DateTimeField(verbose_name='дата публикации', auto_now_add=True)
     last_updated = models.DateTimeField(verbose_name='дата изменении', auto_now=True)
-    author = models.CharField(verbose_name='автор', max_length=100)
+    # author = models.CharField(verbose_name='автор', max_length=100, null=True, blank=True)
+    author = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='news', verbose_name='автор',
+                               null=True)
     category = models.ForeignKey('news.Category', on_delete=models.CASCADE, related_name='news', null=True,
                                  verbose_name='категория')
     tags = models.ManyToManyField('news.Tag', related_name='news', verbose_name='теги')

@@ -1,12 +1,16 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
-
+from django.contrib.auth.models import User
 from news.models import News
 from workspace.forms import NewsForm
 
 
 def workspace(request):
-    news = News.objects.all().order_by('-date', 'name')
+
+    if not request.user.is_authenticated:
+        return redirect('/')
+
+    news = News.objects.filter(author=request.user).order_by('-date', 'name')
     page = request.GET.get('page', 1) or 1
     pagin = Paginator(news, 12)
     news = pagin.get_page(page)

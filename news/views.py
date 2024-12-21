@@ -11,7 +11,6 @@ def main(request):
         news = news.filter(category__id=int(category_id))
 
     search = request.GET.get('search')
-    print(search)
 
     if search is not None:
         news = news.filter(name__icontains=search)
