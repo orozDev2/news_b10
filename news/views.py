@@ -1,6 +1,10 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
+from django.contrib.auth import login, authenticate, logout
+
+from news.forms import LoginForm
 from news.models import News, Category
+from django.contrib.auth.models import User
 
 
 def main(request):
@@ -32,5 +36,31 @@ def detail_news(request, id):
     news.save()
     return render(request, 'detail_news.html', {'news': news})
 
+
+def login_profile(request):
+    if request.user.is_authenticated:
+        return redirect('/')
+
+    form = LoginForm()
+    message = None
+
+    if request.method == 'POST':
+        form = LoginForm(data=request.POST)
+
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+
+            # user = User.objects.filter(username=username).first()
+            # if user and user.check_password(password):
+            user = authenticate(username=username, password=password)
+            if user:
+                login(request, user)
+
+                return redirect('/workspace/')
+
+            message = 'The user is not found or the password is incorrect.'
+
+    return render(request, 'auth/login.html', {'form': form, 'message': message})
 
 # Create your views here.
