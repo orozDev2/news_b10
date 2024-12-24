@@ -26,6 +26,8 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('news/', include('news.urls')),
     path('workspace/', include('workspace.urls')),
+    path('login/', views.login_profile, name='login'),
+    path('logout/', views.logout_profile, name='logout'),
     path('', views.main, name='main')
 ]
 

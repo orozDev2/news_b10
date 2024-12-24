@@ -63,4 +63,12 @@ def login_profile(request):
 
     return render(request, 'auth/login.html', {'form': form, 'message': message})
 
+
+def logout_profile(request):
+    if request.user.is_authenticated:
+        logout(request)
+
+    return redirect('/')
+
+
 # Create your views here.
