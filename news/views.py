@@ -1,10 +1,10 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.core.paginator import Paginator
 from django.contrib.auth import login, authenticate, logout
+from django.core.paginator import Paginator
+from django.shortcuts import render, get_object_or_404, redirect
 
+from news.filters import NewsFilter
 from news.forms import LoginForm
-from news.models import News, Category
-from django.contrib.auth.models import User
+from news.models import News
 
 
 def main(request):
@@ -19,11 +19,15 @@ def main(request):
     if search is not None:
         news = news.filter(name__icontains=search)
 
+    filterset = NewsFilter(data=request.GET, queryset=news)
+
+    news = filterset.qs
+
     page = request.GET.get('page', 1) or 1
     pagin = Paginator(news, 12)
     news = pagin.get_page(page)
 
-    return render(request, 'index.html', {'news': news})
+    return render(request, 'index.html', {'news': news, 'filterset': filterset})
 
 
 def about(request):
@@ -69,6 +73,5 @@ def logout_profile(request):
         logout(request)
 
     return redirect('/')
-
 
 # Create your views here.
