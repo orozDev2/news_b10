@@ -1,0 +1,7 @@
+<div class="card p-4 h-100">
+    <form action="{% url 'main' %}" method="get">
+        {{ filterset.form.as_p }}
+        <button type="submit" class="btn btn-success">Filter</button>
+        <a href="{% url 'main' %}" class="btn btn-warning">Reset</a>
+    </form>
+</div>

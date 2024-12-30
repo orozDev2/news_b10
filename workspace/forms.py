@@ -19,7 +19,7 @@ class NewsForm(forms.ModelForm):
 
         # fields = '__all__'
 
-        exclude = ('views',)
+        exclude = ('views', 'author')
 
 
 
@@ -32,7 +32,6 @@ class NewsForm(forms.ModelForm):
             'image': forms.FileInput(attrs={'class': 'form-control', 'accept': 'image/*'}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Описание', 'rows': 7}),
             'content': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Контент', 'rows': 7}),
-            'author': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Автор'}),
             'category': forms.Select(attrs={'class': 'form-select'}),
             'tags': forms.CheckboxSelectMultiple(),
         }

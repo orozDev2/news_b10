@@ -3,6 +3,17 @@
 {% block title %}| Create News{% endblock title %}
 
 {% block content %}
+
+        <style>
+        form ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            color: red;
+        }
+
+    </style>
+
     <h2 class="mb-5">Create News</h2>
 
     <form action="{% url 'create_news' %}" method="POST" enctype="multipart/form-data" novalidate>

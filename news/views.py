@@ -1,10 +1,14 @@
+from django.contrib import messages
+
 from django.contrib.auth import login, authenticate, logout
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.hashers import make_password
 
 from news.filters import NewsFilter
-from news.forms import LoginForm
+from news.forms import LoginForm, ChangePasswordForm
 from news.models import News
+from workspace.decorators import login_required
 
 
 def main(request):
@@ -46,7 +50,6 @@ def login_profile(request):
         return redirect('/')
 
     form = LoginForm()
-    message = None
 
     if request.method == 'POST':
         form = LoginForm(data=request.POST)
@@ -63,15 +66,38 @@ def login_profile(request):
 
                 return redirect('/workspace/')
 
-            message = 'The user is not found or the password is incorrect.'
+            messages.error(request, 'The user is not found or the password is incorrect.')
 
-    return render(request, 'auth/login.html', {'form': form, 'message': message})
+    return render(request, 'auth/login.html', {'form': form})
 
 
 def logout_profile(request):
     if request.user.is_authenticated:
         logout(request)
+        messages.success(request, 'Successfully logged out!')
 
     return redirect('/')
+
+
+@login_required()
+def change_password(request):
+    form = ChangePasswordForm()
+
+    if request.method == 'POST':
+        form = ChangePasswordForm(data=request.POST, user=request.user)
+        if form.is_valid():
+            new_password = form.cleaned_data.get('new_password')
+            user = request.user
+            # user.password = make_password(new_password)
+            user.set_password(new_password)
+            user.save()
+
+            login(request, user)
+
+            messages.success(request, 'The password was modified successfully.')
+            return redirect('/workspace/')
+
+    return render(request, 'auth/change_password.html', {'form': form})
+
 
 # Create your views here.

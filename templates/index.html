@@ -6,13 +6,7 @@
 {% block content %}
     <div class="row">
         <div class="col-12 col-lg-3 col-md-4 mb-4">
-            <div class="card p-4 h-100">
-                <form action="{% url 'main' %}" method="get">
-                    {{ filterset.form.as_p }}
-                    <button type="submit" class="btn btn-success">Filter</button>
-                     <button type="reset" class="btn btn-warning">Reset</button>
-                </form>
-            </div>
+            {% include 'components/news_filter.html' %}
         </div>
         <div class="col-12 col-lg-9 col-md-8">
             <div class="row">
