@@ -4,6 +4,9 @@ from news.models import News
 
 
 class NewsForm(forms.ModelForm):
+    # content = forms.CharField(label='контент', validators=[min_max_length], widget=forms.Textarea(
+    #     attrs={'class': 'form-control', 'placeholder': 'Контент', 'rows': 7}))
+
     class Meta:
         model = News
         # fields = (
@@ -20,8 +23,6 @@ class NewsForm(forms.ModelForm):
         # fields = '__all__'
 
         exclude = ('views', 'author')
-
-
 
         # labels = {
         #     'name': 'dsf dsf sdfsd'
