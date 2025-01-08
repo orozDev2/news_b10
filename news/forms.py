@@ -44,3 +44,46 @@ class ChangePasswordForm(forms.Form):
                 raise forms.ValidationError(errors)
 
         return self.cleaned_data
+
+
+class RegisterForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['first_name'].required = True
+        self.fields['last_name'].required = True
+        self.fields['email'].required = True
+
+    password1 = forms.CharField(label='Придумайте пароль',
+                                widget=forms.PasswordInput(attrs={'class': 'form-control'}),
+                                validators=[validate_password])
+
+    password2 = forms.CharField(label='Придумайте пароль',
+                                widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+
+    class Meta:
+        model = User
+        fields = (
+            'username',
+            'first_name',
+            'last_name',
+            'email',
+        )
+
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+        }
+
+    def clean(self):
+        if self.is_valid():
+
+            password1 = self.cleaned_data.get('password1')
+            password2 = self.cleaned_data.get('password2')
+
+            if password1 != password2:
+                raise forms.ValidationError({'password2': ['Пароли не совпадают']})
+
+        return self.cleaned_data

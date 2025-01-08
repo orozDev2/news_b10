@@ -1,12 +1,12 @@
 from django.contrib import messages
-
 from django.contrib.auth import login, authenticate, logout
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse
 from django.contrib.auth.hashers import make_password
 
 from news.filters import NewsFilter
-from news.forms import LoginForm, ChangePasswordForm
+from news.forms import LoginForm, ChangePasswordForm, RegisterForm
 from news.models import News
 from workspace.decorators import login_required
 
@@ -99,5 +99,27 @@ def change_password(request):
 
     return render(request, 'auth/change_password.html', {'form': form})
 
+
+def register(request):
+    if request.user.is_authenticated:
+        return redirect('/')
+
+    form = RegisterForm()
+
+    if request.method == 'POST':
+        form = RegisterForm(data=request.POST)
+        if form.is_valid():
+            form.cleaned_data.pop('password2')
+            password = form.cleaned_data.pop('password1')
+
+            user = form.save(commit=False)
+            user.set_password(password)
+            user.save()
+
+            login(request, user)
+            messages.success(request, f'Welcome to News.kg "{user.get_full_name()}"')
+            return redirect(reverse('workspace'))
+
+    return render(request, 'auth/register.html', {'form': form})
 
 # Create your views here.

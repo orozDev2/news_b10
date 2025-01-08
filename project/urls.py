@@ -28,6 +28,7 @@ urlpatterns = [
     path('login/', views.login_profile, name='login'),
     path('logout/', views.logout_profile, name='logout'),
     path('profile/change-password/', views.change_password, name='change_password'),
+    path('register/', views.register, name='register'),
 
     path('news/', include('news.urls')),
     path('workspace/', include('workspace.urls')),
