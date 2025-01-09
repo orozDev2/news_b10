@@ -24,7 +24,7 @@ def post_save_user(sender, instance: User, created, *args, **kwargs):
             author=instance,
         )
 
-        with open(os.path.join(settings.BASE_DIR, 'static', 'static_rs', 'img', 'user.png'), 'rb') as b_img:
+        with open(os.path.join(settings.BASE_DIR, 'static', 'static_dirs', 'img', 'user.png'), 'rb') as b_img:
             image = File(b_img, f'{instance.username}.png')
             news.image = image
             news.save()
